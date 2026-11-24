@@ -1,47 +1,46 @@
-# SHALA — Birthday Release Candidate
+# SHALA
 
-Mobile-first HTML/CSS/JS local merge preserving the existing GitHub V2 architecture.
+Mobile-first browser prototype for a guided virtual try-on workflow. The current implementation is a client-side HTML, CSS, and JavaScript application.
 
-## Local merge — 2026-08-30
-Preserved: app-v2.js, generator.js, media-store.js, index.html, existing persistence/IndexedDB/generation boundaries.
+## Current implementation
 
-Integrated: corrected 63 Canons; approved Canon-34 10 poses; 6 Studios / 13 studio assets; Busy ALBUS; Reveal icons; single-category forward-only Try-On path; visual pose/studio selectors; 10-second Reveal Piety.
+The application entry point is `index.html`, which loads `app-v2.js`. The current source includes:
 
-Boundary: generator.js remains the generation service boundary. No production API credential was invented.
+- A multi-step onboarding and measurement flow
+- Pose and studio selection
+- A staged clothing, bag, shoes, and accessories workflow
+- Browser-local state persistence using `localStorage`
+- Media persistence through IndexedDB in `media-store.js`
+- A camera-preview path using `navigator.mediaDevices.getUserMedia()`
+- A reveal flow and saved-favorite state
+- A generation adapter boundary in `generator.js`
 
----
+## Important implementation limits
 
-# SHALA — BUILD 001
+This repository should currently be evaluated as a prototype, not a production AI try-on service.
 
-Mobile-first web prototype implementing the locked SHALA railway before ornamental polish.
+- `generator.js` defaults to `mockGenerator`. It produces a generated SVG placeholder; it does not call a real image-generation provider.
+- The application calls the generation adapter and stores its returned media in IndexedDB, but a production provider is not configured in the reviewed source.
+- Camera preview is attempted through the browser's camera API and depends on browser permission and a secure context. A working camera preview is not evidence of an integrated image-generation pipeline.
+- Browser-local storage is not a server-backed account, synchronization, or backup system.
+- The repository README previously referenced a design scope-lock document at the root. That file was not found at the expected path during this review; treat the source files as the current inspectable implementation until the design document is restored or its location is confirmed.
+- Production accessibility, cross-browser behavior, privacy controls, and deployment behavior have not been independently verified in this audit.
 
-## Implemented in this skeleton
-- First-open gift/dedication shell
-- Persistent local state
-- CREATE ME shell
-- Compact navigation shell
-- Workshop Focus
-- 10-pose grid
-- 5 Studio choices
-- Linear Clothing → Bag → Shoes → Accessory sequence
-- Green / Gray / PEACHED semantic actions
-- START AGAIN behavior
-- Reveal with 10-second clean viewing window
-- Double-tap early control reveal
-- Piety-like pending Reveal persistence
-- Three Favorite slots, first→center
-- First-Favorite trivia
-- Trend Alert gacha to Google Images
-- Basic mobile-first responsive layout
+## Project structure
 
-## Intentionally stubbed for later BUILD stages
-- Real camera integration
-- Real AI image generation / retry transaction
-- Canon 63-seed asset resolver
-- Actual workshop/compact/Hamptons artwork integration
-- Pinch/pan image viewer
-- Atomic Favorite replacement UI
-- ALBUS animation set
-- Production accessibility hardening
+- `index.html` — application entry point
+- `app-v2.js` — application interface and workflow
+- `generator.js` — generation provider interface and current mock implementation
+- `media-store.js` — IndexedDB media storage helpers
+- `styles.css` — application styling
+- `assets/` — visual assets used by the interface
 
-Design source of truth: `SHALA-DESIGN-SCOPELOCK-001.md`.
+## Running locally
+
+Serve the repository directory with a local HTTP development server and open the resulting local URL in a modern browser. Camera access generally requires localhost or HTTPS and explicit browser permission.
+
+No package manager or build command is documented in the reviewed entry point. No automated test command was verified during this review.
+
+## Status
+
+**Prototype / development stage.** Do not represent this repository as a production AI try-on application until a real generation provider, privacy and data-handling controls, automated tests, and deployment verification are in place.
